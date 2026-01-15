@@ -8,7 +8,7 @@ export class HomePage {
   }
 
   async open(): Promise<void> {
-    await this.page.goto("/", {
+    await this.page.goto("https://demo4.cybersoft.edu.vn/", {
       waitUntil: "domcontentloaded",
       timeout: 30000,
     });

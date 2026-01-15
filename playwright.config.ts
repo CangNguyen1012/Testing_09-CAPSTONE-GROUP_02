@@ -48,8 +48,6 @@ export default defineConfig({
 
     // Quay video khi test fail
     video: "retain-on-failure",
-
-    baseURL: process.env.BASE_URL,
   },
 
   /* Configure projects for major browsers */
