@@ -8,7 +8,7 @@ export class HomePage {
   }
 
   async open(): Promise<void> {
-    await this.page.goto(process.env.BASE_URL as string, {
+    await this.page.goto("/", {
       waitUntil: "domcontentloaded",
       timeout: 30000,
     });
