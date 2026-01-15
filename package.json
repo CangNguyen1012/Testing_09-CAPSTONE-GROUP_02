@@ -1,0 +1,27 @@
+{
+  "name": "testing_09_capstone_group_02",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:chrome": "playwright test --project=chromium",
+    "test:debug": "playwright test --debug",
+    "test:example": "playwright test example",
+    "test:report": "playwright show-report",
+    "test:home": "playwright test home --project=chromium --headed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.8",
+    "dotenv": "^17.2.3"
+  },
+  "dependencies": {
+    "csv-parse": "^6.1.0"
+  }
+}

@@ -1,0 +1,1 @@
+Đây là nơi để viết các chức năng cho từng loại trang.
