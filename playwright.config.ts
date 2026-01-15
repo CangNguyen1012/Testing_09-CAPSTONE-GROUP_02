@@ -54,19 +54,18 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"], ignoreHTTPSErrors: true },
+      use: { ...devices["Desktop Chrome"] },
     },
 
     {
       name: "firefox",
-      use: { ...devices["Desktop Firefox"], ignoreHTTPSErrors: true },
+      use: { ...devices["Desktop Firefox"] },
     },
 
     {
       name: "webkit",
       use: {
         ...devices["Desktop Safari"],
-        ignoreHTTPSErrors: true, // Bypass TLS validation for WebKit only
       },
     },
 

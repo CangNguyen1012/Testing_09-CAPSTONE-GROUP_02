@@ -8,8 +8,6 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    env:
-      BASE_URL: ${{ secrets.BASE_URL }}
     steps:
       # B1: clone source code từ github
       - name: Checkout code
