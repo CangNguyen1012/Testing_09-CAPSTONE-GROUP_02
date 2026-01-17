@@ -48,6 +48,9 @@ export default defineConfig({
 
     // Quay video khi test fail
     video: "retain-on-failure",
+
+    // Bỏ qua lỗi HTTPS (bỏ qua lỗi chứng chỉ SSL)
+    ignoreHTTPSErrors: true,
   },
 
   /* Configure projects for major browsers */
