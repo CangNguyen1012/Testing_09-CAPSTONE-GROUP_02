@@ -8,6 +8,10 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+
+    env:
+      NODE_OPTIONS: --openssl-legacy-provider   # ⭐ FIX TLS ERROR
+
     steps:
       # B1: clone source code từ github
       - name: Checkout code
@@ -17,7 +21,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: lts/*
+          # node-version: lts/*
+          node-version: 18
           cache: "npm" # cache này giúp tăng tốc độ build playwright
 
       # B3: cài đặt các thư viện có trong source code playwright
