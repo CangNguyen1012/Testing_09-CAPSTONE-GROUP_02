@@ -53,7 +53,7 @@ export default defineConfig({
         ignoreHTTPSErrors: true,
 
         // Mở trình duyệt ở chế độ có giao diện
-        headless: false,
+        headless: true,
     },
 
     /* Configure projects for major browsers */
