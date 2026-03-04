@@ -1,4 +1,5 @@
-import { Locator, Page } from "@playwright/test"
+import { Page, Locator, expect } from "@playwright/test"
+
 export class LoginPage {
     readonly page: Page
 
@@ -6,23 +7,87 @@ export class LoginPage {
     readonly emailInput: Locator
     readonly passwordInput: Locator
     readonly loginButton: Locator
+    readonly registerLink: Locator
+    readonly logoutButton: Locator
+    readonly errorMessage: Locator
+    readonly emailErrorMessage: Locator
+    readonly passwordErrorMessage: Locator
 
     readonly url = "https://demo4.cybersoft.edu.vn/login"
 
     constructor(page: Page) {
         this.page = page
-        this.emailInput = page.locator("input[name='email']")
-        this.passwordInput = page.locator("input[name='password']")
+
+        // Define locators
+        this.emailInput = page.locator("#email")
+        this.passwordInput = page.locator("#password")
         this.loginButton = page.locator("button[type='submit']")
+        this.registerLink = page.getByRole("link", { name: "Register now ?" })
+        this.logoutButton = page.getByRole("button", { name: "Logout" })
+        this.errorMessage = page.locator(".text-danger")
+        this.emailErrorMessage = page
+            .locator("#email")
+            .locator('xpath=following::div[contains(@class,"text-danger")]')
+            .first()
+        this.passwordErrorMessage = page
+            .locator("#password")
+            .locator('xpath=following::div[contains(@class,"text-danger")]')
+            .first()
     }
 
-    async gotoLoginPage() {
-        await this.page.goto(this.url)
+    // Open login page
+    async goto(): Promise<void> {
+        await this.page.goto(this.url, { timeout: 60000 })
     }
 
-    async login(email: string, password: string) {
-        await this.emailInput.fill(email, { timeout: 5000 })
-        await this.passwordInput.fill(password, { timeout: 5000 })
+    async fillEmail(email: string): Promise<void> {
+        await this.emailInput.fill(email, { timeout: 30000 })
+    }
+
+    async fillPassword(password: string): Promise<void> {
+        await this.passwordInput.fill(password, { timeout: 30000 })
+    }
+
+    async clickLogin(): Promise<void> {
+        await this.loginButton.click({ timeout: 30000 })
+    }
+
+    async clickRegisterLink(): Promise<void> {
+        await this.registerLink.click({ timeout: 30000 })
+    }
+
+    async login(email: string, password: string): Promise<void> {
+        await this.fillEmail(email)
+        await this.fillPassword(password)
+        await this.clickLogin()
+    }
+
+    async isLoginSuccess(): Promise<boolean> {
+        // Sau khi login thành công sẽ chuyển về trang profile
+        console.log("isSuccess: ", this.page.url())
+        await this.page.waitForURL(/profile/, { timeout: 10000 })
+        return this.page.url() !== this.url
+    }
+
+    async isLoginFail(): Promise<boolean> {
+        // Sau khi login không thành công sẽ vẫn ở lại trang login
+        console.log("errormessage: ", this.page.url())
+        await this.page.waitForURL(/login/, { timeout: 10000 })
+        return this.page.url() !== this.url
+    }
+
+    async logout() {
+        await this.logoutButton.click()
+    }
+
+    // Logout thành công
+    async isLogoutSuccess() {
+        await expect(this.page).toHaveURL(/login/)
+        await expect(this.loginButton).toBeVisible()
+    }
+
+    //Kiểm tra thông báo lỗi hiển thị đúng khi để trống Your Email
+    async submit() {
         await this.loginButton.click()
     }
 }
