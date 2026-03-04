@@ -11,11 +11,8 @@ export class LoginPage {
 
     constructor(page: Page) {
         this.page = page
-        // <input class="form-control" id="email" name="email" required="" placeholder="Your Email">
         this.emailInput = page.locator("input[name='email']")
-        // <input type="password" class="form-control" id="password" name="password" required="" placeholder="Your Password">
         this.passwordInput = page.locator("input[name='password']")
-        // <button class="btn btn-success login" type="submit">Login</button>
         this.loginButton = page.locator("button[type='submit']")
     }
 
