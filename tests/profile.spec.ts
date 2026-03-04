@@ -27,6 +27,7 @@ test.describe("Profile Page tests", () => {
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
         await page.waitForTimeout(2000)
+        await profilePage.expectSuccessToast("Cập nhật thông tin thành công")
 
         // Verify the name is updated
         const updatedName = await page
@@ -44,6 +45,7 @@ test.describe("Profile Page tests", () => {
         await page.waitForTimeout(1000)
         await profilePage.saveButton.click()
         await page.waitForTimeout(2000)
+        await profilePage.expectSuccessToast("Cập nhật thông tin thành công")
 
         // Verify the phone number is updated
         const updatedPhone = await page
@@ -61,6 +63,7 @@ test.describe("Profile Page tests", () => {
         await page.waitForTimeout(1000)
         await profilePage.saveButton.click()
         await page.waitForTimeout(2000)
+        await profilePage.expectSuccessToast("Cập nhật thông tin thành công")
 
         // Verify the birthday is updated
         const updatedBirthday = await page
@@ -78,6 +81,7 @@ test.describe("Profile Page tests", () => {
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
         await page.waitForTimeout(2000)
+        await profilePage.expectSuccessToast("Cập nhật thông tin thành công")
 
         // Verify the gender is updated
         await profilePage.clickEditButton()
@@ -96,6 +100,7 @@ test.describe("Profile Page tests", () => {
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
         await page.waitForTimeout(2000)
+        await profilePage.expectSuccessToast("Cập nhật thông tin thành công")
 
         // Verify the certification is added
         const certifications = await page
@@ -118,6 +123,7 @@ test.describe("Profile Page tests", () => {
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
         await page.waitForTimeout(2000)
+        await profilePage.expectSuccessToast("Cập nhật thông tin thành công")
 
         // Verify the certifications are added
         const certifications = await page
@@ -138,6 +144,7 @@ test.describe("Profile Page tests", () => {
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
         await page.waitForTimeout(3000)
+        await profilePage.expectSuccessToast("Cập nhật thông tin thành công")
 
         // Verify the skill is added
         const skills = await page
@@ -161,6 +168,7 @@ test.describe("Profile Page tests", () => {
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
         await page.waitForTimeout(2000)
+        await profilePage.expectSuccessToast("Cập nhật thông tin thành công")
 
         // Verify the skills are added
         const skills = await page
@@ -267,6 +275,7 @@ test.describe("Profile Page tests", () => {
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
         await page.waitForTimeout(2000)
+        await profilePage.expectSuccessToast("Cập nhật thông tin thành công")
 
         // Verify the profile image is updated
         const uploadedImageSrc = await page
@@ -288,6 +297,7 @@ test.describe("Profile Page tests", () => {
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
         await page.waitForTimeout(2000)
+        await profilePage.expectSuccessToast("Cập nhật thông tin thành công")
 
         // Verify the basic information is updated
         const updatedName = await page
@@ -319,5 +329,115 @@ test.describe("Profile Page tests", () => {
         // Verify an error message is displayed for invalid birthday input
         const errorMessage = await page.locator(".text-danger").textContent()
         expect(errorMessage).toBe("Please enter a valid date.")
+    })
+
+    test("Verify cannot save with empty name", async ({ page }) => {
+        const profilePage = new ProfilePage(page)
+        await profilePage.clickEditButton()
+
+        await profilePage.updateName("")
+        await profilePage.clickSave()
+
+        const errorMessage = await page
+            .locator(".text-danger")
+            .first()
+            .textContent()
+        expect(errorMessage).toBeTruthy()
+    })
+
+    test("Verify phone rejects letters", async ({ page }) => {
+        const profilePage = new ProfilePage(page)
+        await profilePage.clickEditButton()
+
+        await profilePage.updatePhone("abcde123")
+        await profilePage.clickSave()
+
+        const errorMessage = await page.locator(".text-danger").textContent()
+        expect(errorMessage).toBeTruthy()
+    })
+
+    test("Verify phone too short validation", async ({ page }) => {
+        const profilePage = new ProfilePage(page)
+        await profilePage.clickEditButton()
+
+        await profilePage.updatePhone("123")
+        await profilePage.clickSave()
+
+        const errorMessage = await page.locator(".text-danger").textContent()
+        expect(errorMessage).toBeTruthy()
+    })
+
+    test("Verify birthday cannot be future date", async ({ page }) => {
+        const profilePage = new ProfilePage(page)
+        await profilePage.clickEditButton()
+
+        await profilePage.updateBirthday("01/01/2099")
+        await profilePage.clickSave()
+
+        const errorMessage = await page.locator(".text-danger").textContent()
+        expect(errorMessage).toBeTruthy()
+    })
+
+    test("Verify duplicate certification is not allowed", async ({ page }) => {
+        const profilePage = new ProfilePage(page)
+        await profilePage.clickEditButton()
+
+        await profilePage.clearCertification()
+        await profilePage.addCertification("ISTQB")
+        await profilePage.addCertification("ISTQB")
+
+        await profilePage.clickSave()
+
+        const certifications = await page
+            .locator(".d-flex.flex-row.flex-wrap p.lorem")
+            .allTextContents()
+
+        const count = certifications.filter((c) => c === "ISTQB").length
+        expect(count).toBe(1)
+    })
+
+    test("Verify empty certification cannot be added", async ({ page }) => {
+        const profilePage = new ProfilePage(page)
+        await profilePage.clickEditButton()
+
+        await profilePage.certificationInput.fill("")
+        await page.keyboard.press("Enter")
+
+        const tags = await page.locator(".ant-tag").count()
+        expect(tags).toBe(0)
+    })
+
+    test("Verify duplicate skill not allowed", async ({ page }) => {
+        const profilePage = new ProfilePage(page)
+        await profilePage.clickEditButton()
+
+        await profilePage.clearSkill()
+        await profilePage.addSkill("Automation")
+        await profilePage.addSkill("Automation")
+
+        await profilePage.clickSave()
+
+        const skills = await page
+            .locator(".d-flex.flex-row.flex-wrap p.lorem")
+            .allTextContents()
+
+        const count = skills.filter((s) => s === "Automation").length
+        expect(count).toBe(1)
+    })
+
+    test("Verify very long skill name handling", async ({ page }) => {
+        const profilePage = new ProfilePage(page)
+        await profilePage.clickEditButton()
+
+        const longSkill = "A".repeat(300)
+        await profilePage.addSkill(longSkill)
+
+        await profilePage.clickSave()
+
+        const skills = await page
+            .locator(".d-flex.flex-row.flex-wrap p.lorem")
+            .allTextContents()
+
+        expect(skills.some((s) => s.length <= 255)).toBeTruthy()
     })
 })
