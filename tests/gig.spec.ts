@@ -7,7 +7,7 @@ test.describe("Gig Management Tests", () => {
         const loginPage = new LoginPage(page)
         await page.waitForTimeout(2000)
 
-        await loginPage.gotoLoginPage()
+        await loginPage.goto()
         await loginPage.login("testuser123@gmail.com", "cang@1012")
         await page.waitForTimeout(2000)
 
