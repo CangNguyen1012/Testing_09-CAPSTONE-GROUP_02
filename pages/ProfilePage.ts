@@ -28,6 +28,7 @@ export class ProfilePage {
     readonly clearCertificationButton: Locator
     readonly clearSkillButton: Locator
     readonly createGigButton: Locator
+    readonly successToastMessage: Locator
 
     readonly url = "https://demo4.cybersoft.edu.vn/profile"
 
@@ -66,6 +67,29 @@ export class ProfilePage {
         this.createGigButton = page.locator("button.btn", {
             hasText: "Create a new Gig",
         })
+        this.successToastMessage = page.locator(".Toastify__toast--success")
+    }
+
+    // toast helpers -------------------------------------------------------
+    /**
+     * Waits until a success toast appears and returns its text.
+     */
+    async waitForSuccessToast(timeout: number = 5000): Promise<string> {
+        await this.successToastMessage.waitFor({ state: "visible", timeout })
+        const text = await this.successToastMessage.textContent()
+        return text ?? ""
+    }
+
+    /**
+     * Assert that a success toast contains the expected substring.
+     */
+    async expectSuccessToast(expected: string, timeout: number = 5000) {
+        const text = await this.waitForSuccessToast(timeout)
+        if (!text.includes(expected)) {
+            throw new Error(
+                `Expected toast to include "${expected}" but got "${text}"`,
+            )
+        }
     }
 
     async clickDropdownMenu() {
@@ -281,6 +305,8 @@ export class ProfilePage {
             "click_save",
         )
         await this.saveButton.click()
+        // wait for the success toast (message is localized Vietnamese in screenshot)
+        await this.waitForSuccessToast().catch(() => {})
     }
 
     async clickCancel() {

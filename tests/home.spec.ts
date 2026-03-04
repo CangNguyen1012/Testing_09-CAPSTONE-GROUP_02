@@ -9,7 +9,6 @@ test.describe("Home Page tests", () => {
         await basePage.goto()
 
         await page.waitForTimeout(3000)
-        // <button class="btn btn-success" type="submit">Search</button>
         const searchButton = page.getByRole("button", { name: "Search" })
         await highLightAndScreenshot(
             page,
