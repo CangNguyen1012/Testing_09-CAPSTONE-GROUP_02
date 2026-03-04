@@ -60,38 +60,20 @@ export class ProfilePage {
         this.skillInput = page.locator("input#skill")
         this.saveButton = page.locator("button", { hasText: "Save" })
         this.cancelButton = page.locator("button", { hasText: "Cancel" })
-        this.clearCertificationButton = page.locator(
-            "input#certification + div button",
-        )
-        this.clearSkillButton = page.locator("input#skill + div button")
+        this.clearCertificationButton = page
+            .locator(
+                '.MuiFormControl-root:has(label:has-text("Certification"))',
+            )
+            .getByRole("button", { name: "Clear" })
+        this.clearSkillButton = page
+            .locator('.MuiFormControl-root:has(label:has-text("Skill"))')
+            .getByRole("button", { name: "Clear" })
         this.createGigButton = page.locator("button.btn", {
             hasText: "Create a new Gig",
         })
         this.successToastMessage = page.locator(".Toastify__toast--success", {
             hasText: "Cập nhật thông tin thành công",
         })
-    }
-
-    // toast helpers -------------------------------------------------------
-    /**
-     * Waits until a success toast appears and returns its text.
-     */
-    async waitForSuccessToast(timeout: number = 60000): Promise<string> {
-        await this.successToastMessage.waitFor({ state: "visible", timeout })
-        const text = await this.successToastMessage.textContent()
-        return text ?? ""
-    }
-
-    /**
-     * Assert that a success toast contains the expected substring.
-     */
-    async expectSuccessToast(expected: string, timeout: number = 5000) {
-        const text = await this.waitForSuccessToast(timeout)
-        if (!text.includes(expected)) {
-            throw new Error(
-                `Expected toast to include "${expected}" but got "${text}"`,
-            )
-        }
     }
 
     async clickDropdownMenu() {
@@ -149,7 +131,7 @@ export class ProfilePage {
         )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
-            this.FacebookLink.click(),
+            this.FacebookLink.click({ timeout: 3000 }),
         ])
         await newPage.waitForLoadState()
     }
@@ -163,7 +145,7 @@ export class ProfilePage {
         )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
-            this.GoogleLink.click(),
+            this.GoogleLink.click({ timeout: 3000 }),
         ])
         await newPage.waitForLoadState()
     }
@@ -177,7 +159,7 @@ export class ProfilePage {
         )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
-            this.GithubLink.click(),
+            this.GithubLink.click({ timeout: 3000 }),
         ])
         await newPage.waitForLoadState()
     }
@@ -191,7 +173,7 @@ export class ProfilePage {
         )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
-            this.TwitterLink.click(),
+            this.TwitterLink.click({ timeout: 3000 }),
         ])
         await newPage.waitForLoadState()
     }
@@ -205,7 +187,7 @@ export class ProfilePage {
         )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
-            this.DribbleLink.click(),
+            this.DribbleLink.click({ timeout: 3000 }),
         ])
         await newPage.waitForLoadState()
     }
@@ -219,14 +201,16 @@ export class ProfilePage {
         )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
-            this.StackOverflowLink.click(),
+            this.StackOverflowLink.click({ timeout: 3000 }),
         ])
         await newPage.waitForLoadState()
     }
 
     async updateName(name: string) {
-        await this.nameInput.fill("")
-        await this.nameInput.fill(name)
+        await this.nameInput.fill("", { timeout: 3000 })
+        await this.page.waitForTimeout(1000) // Wait for DOM update
+        await this.nameInput.fill(name, { timeout: 3000 })
+        await this.page.waitForTimeout(1000) // Wait for DOM update
         await highLightAndScreenshot(
             this.page,
             this.nameInput,
@@ -236,8 +220,10 @@ export class ProfilePage {
     }
 
     async updatePhone(phone: string) {
-        await this.phoneInput.fill("")
-        await this.phoneInput.fill(phone)
+        await this.phoneInput.fill("", { timeout: 3000 })
+        await this.page.waitForTimeout(1000) // Wait for DOM update
+        await this.phoneInput.fill(phone, { timeout: 3000 })
+        await this.page.waitForTimeout(1000) // Wait for DOM update
         await highLightAndScreenshot(
             this.page,
             this.phoneInput,
@@ -247,8 +233,10 @@ export class ProfilePage {
     }
 
     async updateBirthday(birthday: string) {
-        await this.birthdayInput.fill("")
-        await this.birthdayInput.fill(birthday)
+        await this.birthdayInput.fill("", { timeout: 3000 })
+        await this.page.waitForTimeout(1000) // Wait for DOM update
+        await this.birthdayInput.fill(birthday, { timeout: 3000 })
+        await this.page.waitForTimeout(1000) // Wait for DOM update
         await highLightAndScreenshot(
             this.page,
             this.birthdayInput,
@@ -258,7 +246,7 @@ export class ProfilePage {
     }
 
     async selectMale() {
-        await this.maleRadio.check()
+        await this.maleRadio.check({ timeout: 3000 })
         await highLightAndScreenshot(
             this.page,
             this.maleRadio,
@@ -268,7 +256,7 @@ export class ProfilePage {
     }
 
     async selectFemale() {
-        await this.femaleRadio.check()
+        await this.femaleRadio.check({ timeout: 3000 })
         await highLightAndScreenshot(
             this.page,
             this.femaleRadio,
@@ -278,25 +266,29 @@ export class ProfilePage {
     }
 
     async addCertification(cert: string) {
-        await this.certificationInput.fill(cert)
-        await this.page.keyboard.press("Enter")
+        await this.certificationInput.fill(cert, { timeout: 3000 })
         await highLightAndScreenshot(
             this.page,
             this.certificationInput,
             "Profile Page tests",
             "add_certification",
         )
+        await this.page.waitForTimeout(1000) // Wait for DOM update
+        await this.page.keyboard.press("Enter")
+        await this.page.waitForTimeout(2000) // Wait for the certification to be added
     }
 
     async addSkill(skill: string) {
-        await this.skillInput.fill(skill)
-        await this.page.keyboard.press("Enter")
+        await this.skillInput.fill(skill, { timeout: 3000 })
+        await this.page.waitForTimeout(1000) // Wait for DOM update
         await highLightAndScreenshot(
             this.page,
             this.skillInput,
             "Profile Page tests",
             "add_skill",
         )
+        await this.page.keyboard.press("Enter")
+        await this.page.waitForTimeout(2000) // Wait for DOM update
     }
 
     async clickSave() {
@@ -306,9 +298,8 @@ export class ProfilePage {
             "Profile Page tests",
             "click_save",
         )
-        await this.saveButton.click()
-        // wait for the success toast (message is localized Vietnamese in screenshot)
-        // await this.waitForSuccessToast().catch(() => {})
+        await this.saveButton.click({ timeout: 3000 })
+        await this.page.waitForTimeout(2000) // Wait for save operation to complete
     }
 
     async clickCancel() {
@@ -318,7 +309,7 @@ export class ProfilePage {
             "Profile Page tests",
             "click_cancel",
         )
-        await this.cancelButton.click()
+        await this.cancelButton.click({ timeout: 3000 })
     }
 
     async updateProfile(data: {
@@ -343,8 +334,8 @@ export class ProfilePage {
                 "Profile Page tests",
                 "clear_certification",
             )
-            await this.clearCertificationButton.click()
-            await this.page.waitForTimeout(500) // Wait for DOM update
+            await this.clearCertificationButton.click({ timeout: 3000 })
+            await this.page.waitForTimeout(1000) // Wait for DOM update
         }
     }
 
@@ -356,8 +347,8 @@ export class ProfilePage {
                 "Profile Page tests",
                 "clear_skill",
             )
-            await this.clearSkillButton.click()
-            await this.page.waitForTimeout(500) // Wait for DOM update
+            await this.clearSkillButton.click({ timeout: 3000 })
+            await this.page.waitForTimeout(1000) // Wait for DOM update
         }
     }
 
@@ -368,6 +359,6 @@ export class ProfilePage {
             "Profile Page tests",
             "click_create_gig",
         )
-        await this.createGigButton.click()
+        await this.createGigButton.click({ timeout: 3000 })
     }
 }
