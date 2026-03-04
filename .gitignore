@@ -10,3 +10,6 @@ node_modules/
 /playwright/.auth/
 
 screenshot/
+# Allure
+allure-results/
+allure-report/

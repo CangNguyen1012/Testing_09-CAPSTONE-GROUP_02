@@ -4,21 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test",
+    "test": "playwright test --headed --project=chromium",
     "test:ui": "playwright test --ui",
     "test:chrome": "playwright test --project=chromium",
     "test:debug": "playwright test --debug",
     "test:example": "playwright test example",
     "test:report": "playwright show-report",
-    "test:home": "playwright test home --project=chromium --headed"
+    "test:home": "playwright test home --project=chromium --headed",
+    "test:login": "playwright test login --project=chromium --headed"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "@playwright/test": "^1.57.0",
+    "@playwright/test": "^1.58.0",
     "@types/node": "^25.0.8",
+    "allure-playwright": "^3.4.5",
     "dotenv": "^17.2.3"
   },
   "dependencies": {
