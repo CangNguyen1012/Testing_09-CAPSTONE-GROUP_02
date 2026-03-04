@@ -23,6 +23,7 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickSave()
 
         // Verify the name is updated
+        await page.waitForTimeout(1000) // Wait for page to reload
         const updatedName = await page
             .locator(".d-flex.align-items-center.gap-5 p.lorem")
             .nth(0)
@@ -37,6 +38,7 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickSave()
 
         // Verify the phone number is updated
+        await page.waitForTimeout(1000) // Wait for page to reload
         const updatedPhone = await page
             .locator(".d-flex.align-items-center.gap-5 p.lorem")
             .nth(1)
@@ -51,6 +53,7 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickSave()
 
         // Verify the birthday is updated
+        await page.waitForTimeout(1000) // Wait for page to reload
         const updatedBirthday = await page
             .locator(".d-flex.align-items-center.gap-5 p.lorem")
             .nth(2)
@@ -78,10 +81,10 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickSave()
 
         // Verify the certification is added
+        await page.waitForTimeout(2000) // Wait for the certifications to be updated
         const certifications = await page
             .locator('.inner_item:has(h3:has-text("Certification")) p.lorem')
             .allTextContents()
-        await page.waitForTimeout(2000) // Wait for the certifications to be updated
         expect(certifications).toContain("ISTQB")
     })
 
@@ -95,10 +98,10 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickSave()
 
         // Verify the certifications are added
+        await page.waitForTimeout(2000) // Wait for the certifications to be updated
         const certifications = await page
             .locator('.inner_item:has(h3:has-text("Certification")) p.lorem')
             .allTextContents()
-        await page.waitForTimeout(2000) // Wait for the certifications to be updated
         expect(certifications).toContain("Testing")
         expect(certifications).toContain("PMP")
         expect(certifications).toContain("AWS Certified Solutions Architect")
@@ -112,10 +115,10 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickSave()
 
         // Verify the skill is added
+        await page.waitForTimeout(2000) // Wait for the skills to be updated
         const skills = await page
             .locator('.inner_item:has(h3:has-text("Skills")) p.lorem')
             .allTextContents()
-        await page.waitForTimeout(2000) // Wait for the skills to be updated
         expect(skills).toContain("Automation")
     })
 
@@ -129,10 +132,10 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickSave()
 
         // Verify the skills are added
+        await page.waitForTimeout(2000) // Wait for the skills to be updated
         const skills = await page
             .locator('.inner_item:has(h3:has-text("Skills")) p.lorem')
             .allTextContents()
-        await page.waitForTimeout(2000) // Wait for the skills to be updated
         expect(skills).toContain("Manual Testing")
         expect(skills).toContain("Performance Testing")
         expect(skills).toContain("Security Testing")
@@ -226,6 +229,7 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickSave()
 
         // Verify the profile image is updated
+        await page.waitForTimeout(1000) // Wait for image to upload
         const uploadedImageSrc = await page
             .locator("div.image.d-flex img.avatar")
             .getAttribute("src")
@@ -244,6 +248,7 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickSave()
 
         // Verify the basic information is updated
+        await page.waitForTimeout(1000) // Wait for page to reload
         const updatedName = await page
             .locator(".d-flex.align-items-center.gap-5 p.lorem")
             .nth(0)
@@ -324,8 +329,8 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickEditButton()
 
         await profilePage.clearCertification()
-        await profilePage.addCertification("ISTQB")
-        await profilePage.addCertification("ISTQB")
+        await profilePage.addCertification("I")
+        await profilePage.addCertification("I")
 
         await profilePage.clickSave()
 
@@ -333,7 +338,7 @@ test.describe("Profile Page tests", () => {
             .locator(".d-flex.flex-row.flex-wrap p.lorem")
             .allTextContents()
 
-        const count = certifications.filter((c) => c === "ISTQB").length
+        const count = certifications.filter((c) => c === "I").length
         expect(count).toBe(1)
     })
 
@@ -353,8 +358,8 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickEditButton()
 
         await profilePage.clearSkill()
-        await profilePage.addSkill("Automation")
-        await profilePage.addSkill("Automation")
+        await profilePage.addSkill("A")
+        await profilePage.addSkill("A")
 
         await profilePage.clickSave()
 
@@ -362,7 +367,7 @@ test.describe("Profile Page tests", () => {
             .locator(".d-flex.flex-row.flex-wrap p.lorem")
             .allTextContents()
 
-        const count = skills.filter((s) => s === "Automation").length
+        const count = skills.filter((s) => s === "A").length
         expect(count).toBe(1)
     })
 
@@ -383,6 +388,6 @@ test.describe("Profile Page tests", () => {
     })
 
     test.afterEach(async ({ page }) => {
-        await page.waitForTimeout(2000)
+        await page.waitForTimeout(500) // Brief cleanup pause
     })
 })
