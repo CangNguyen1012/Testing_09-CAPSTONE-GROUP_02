@@ -1,4 +1,5 @@
 import { Page, Locator } from "@playwright/test"
+import { highLightAndScreenshot } from "../utils/screenshot"
 
 export class ProfilePage {
     readonly page: Page
@@ -68,6 +69,12 @@ export class ProfilePage {
     }
 
     async clickDropdownMenu() {
+        await highLightAndScreenshot(
+            this.page,
+            this.dropdownMenuButton,
+            "Profile Page tests",
+            "click_dropdown_menu",
+        )
         await this.dropdownMenuButton.click({ timeout: 3000, force: true })
     }
 
@@ -75,21 +82,45 @@ export class ProfilePage {
         await this.clickDropdownMenu()
         await this.page.waitForTimeout(1000)
         await this.logoutButton.waitFor({ state: "visible", timeout: 60000 })
+        await highLightAndScreenshot(
+            this.page,
+            this.logoutButton,
+            "Profile Page tests",
+            "click_logout",
+        )
         await this.logoutButton.click({ force: true })
         await this.page.waitForURL("/", { timeout: 5000 })
     }
 
     async uploadProfileImage(filePath: string) {
+        await highLightAndScreenshot(
+            this.page,
+            this.profileImageFileInput,
+            "Profile Page tests",
+            "upload_profile_image",
+        )
         await this.profileImageFileInput.setInputFiles(filePath, {
             timeout: 3000,
         })
     }
 
     async clickEditButton() {
+        await highLightAndScreenshot(
+            this.page,
+            this.editButton.nth(1),
+            "Profile Page tests",
+            "click_edit_button",
+        )
         await this.editButton.nth(1).click({ timeout: 3000 })
     }
 
     async clickFacebooklink() {
+        await highLightAndScreenshot(
+            this.page,
+            this.FacebookLink,
+            "Profile Page tests",
+            "click_facebook_link",
+        )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
             this.FacebookLink.click(),
@@ -98,6 +129,12 @@ export class ProfilePage {
     }
 
     async clickGoogleLink() {
+        await highLightAndScreenshot(
+            this.page,
+            this.GoogleLink,
+            "Profile Page tests",
+            "click_google_link",
+        )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
             this.GoogleLink.click(),
@@ -106,6 +143,12 @@ export class ProfilePage {
     }
 
     async clickGithubLink() {
+        await highLightAndScreenshot(
+            this.page,
+            this.GithubLink,
+            "Profile Page tests",
+            "click_github_link",
+        )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
             this.GithubLink.click(),
@@ -114,6 +157,12 @@ export class ProfilePage {
     }
 
     async clickTwitterLink() {
+        await highLightAndScreenshot(
+            this.page,
+            this.TwitterLink,
+            "Profile Page tests",
+            "click_twitter_link",
+        )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
             this.TwitterLink.click(),
@@ -122,6 +171,12 @@ export class ProfilePage {
     }
 
     async clickDribbleLink() {
+        await highLightAndScreenshot(
+            this.page,
+            this.DribbleLink,
+            "Profile Page tests",
+            "click_dribble_link",
+        )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
             this.DribbleLink.click(),
@@ -130,6 +185,12 @@ export class ProfilePage {
     }
 
     async clickStackOverflowLink() {
+        await highLightAndScreenshot(
+            this.page,
+            this.StackOverflowLink,
+            "Profile Page tests",
+            "click_stackoverflow_link",
+        )
         const [newPage] = await Promise.all([
             this.page.context().waitForEvent("page"),
             this.StackOverflowLink.click(),
@@ -140,41 +201,95 @@ export class ProfilePage {
     async updateName(name: string) {
         await this.nameInput.fill("")
         await this.nameInput.fill(name)
+        await highLightAndScreenshot(
+            this.page,
+            this.nameInput,
+            "Profile Page tests",
+            "update_name",
+        )
     }
 
     async updatePhone(phone: string) {
         await this.phoneInput.fill("")
         await this.phoneInput.fill(phone)
+        await highLightAndScreenshot(
+            this.page,
+            this.phoneInput,
+            "Profile Page tests",
+            "update_phone",
+        )
     }
 
     async updateBirthday(birthday: string) {
         await this.birthdayInput.fill("")
         await this.birthdayInput.fill(birthday)
+        await highLightAndScreenshot(
+            this.page,
+            this.birthdayInput,
+            "Profile Page tests",
+            "update_birthday",
+        )
     }
 
     async selectMale() {
         await this.maleRadio.check()
+        await highLightAndScreenshot(
+            this.page,
+            this.maleRadio,
+            "Profile Page tests",
+            "select_male",
+        )
     }
 
     async selectFemale() {
         await this.femaleRadio.check()
+        await highLightAndScreenshot(
+            this.page,
+            this.femaleRadio,
+            "Profile Page tests",
+            "select_female",
+        )
     }
 
     async addCertification(cert: string) {
         await this.certificationInput.fill(cert)
         await this.page.keyboard.press("Enter")
+        await highLightAndScreenshot(
+            this.page,
+            this.certificationInput,
+            "Profile Page tests",
+            "add_certification",
+        )
     }
 
     async addSkill(skill: string) {
         await this.skillInput.fill(skill)
         await this.page.keyboard.press("Enter")
+        await highLightAndScreenshot(
+            this.page,
+            this.skillInput,
+            "Profile Page tests",
+            "add_skill",
+        )
     }
 
     async clickSave() {
+        await highLightAndScreenshot(
+            this.page,
+            this.saveButton,
+            "Profile Page tests",
+            "click_save",
+        )
         await this.saveButton.click()
     }
 
     async clickCancel() {
+        await highLightAndScreenshot(
+            this.page,
+            this.cancelButton,
+            "Profile Page tests",
+            "click_cancel",
+        )
         await this.cancelButton.click()
     }
 
@@ -193,18 +308,38 @@ export class ProfilePage {
     }
 
     async clearCertification() {
-        if (await this.clearCertificationButton.isVisible()) {
+        while (await this.clearCertificationButton.isVisible()) {
+            await highLightAndScreenshot(
+                this.page,
+                this.clearCertificationButton,
+                "Profile Page tests",
+                "clear_certification",
+            )
             await this.clearCertificationButton.click()
+            await this.page.waitForTimeout(500) // Wait for DOM update
         }
     }
 
     async clearSkill() {
-        if (await this.clearSkillButton.isVisible()) {
+        while (await this.clearSkillButton.isVisible()) {
+            await highLightAndScreenshot(
+                this.page,
+                this.clearSkillButton,
+                "Profile Page tests",
+                "clear_skill",
+            )
             await this.clearSkillButton.click()
+            await this.page.waitForTimeout(500) // Wait for DOM update
         }
     }
 
     async clickCreateGig() {
+        await highLightAndScreenshot(
+            this.page,
+            this.createGigButton,
+            "Profile Page tests",
+            "click_create_gig",
+        )
         await this.createGigButton.click()
     }
 }

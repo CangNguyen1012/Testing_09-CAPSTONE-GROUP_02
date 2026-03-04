@@ -56,43 +56,36 @@ export async function highLightAndScreenshot(
     locator: Locator,
     testName: string,
     stepName: string,
+    // elementOnly = false,
 ): Promise<void> {
     try {
-        // B1: tạo tên folder (sanitize để tránh ký tự không hợp lệ)
         const folderName = sanitizeFileName(testName)
-
-        // B2: tạo đường dẫn để lưu folder
-        // __dirname: thư mục (folder) chứa file code
-        // ..: quay lên thư mục cha
         const screenshotDir = join(__dirname, "..", "screenshot", folderName)
-
-        // B3: tạo folder
         mkdirSync(screenshotDir, { recursive: true })
 
         await locator.waitFor({ state: "visible", timeout: 10000 })
 
-        // B4: highlight element
+        // ✅ Scroll element into view (extra safety)
+        await locator.scrollIntoViewIfNeeded()
+
+        // Highlight
         await highlightElement(locator)
 
-        // Đợi một chút để highlight hiển thị rõ ràng
-        await locator.evaluate((el) => el.getBoundingClientRect())
+        // Wait for highlight to render
+        await delay(1000)
 
-        // B5: chụp ảnh với highlight visible
         const filePath = join(
             screenshotDir,
             `${sanitizeFileName(stepName)}.png`,
         )
+
         await page.screenshot({ path: filePath })
 
-        // B6: remove highlight sau khi chụp ảnh xong
         await removeHighlight(locator)
     } catch (error) {
-        // Đảm bảo remove highlight ngay cả khi có lỗi
         try {
             await removeHighlight(locator)
-        } catch {
-            // Ignore cleanup errors
-        }
+        } catch {}
 
         if (error instanceof Error) {
             throw new Error(

@@ -3,7 +3,7 @@ import { join } from "path";
 import { parse } from "csv-parse/sync";
 import { Options } from "csv-parse";
 
-// Định nghĩa dữ liệu cócó trong file csv
+// Định nghĩa dữ liệu có trong file csv
 // export interface LoginData {
 //   username: string;
 //   password: string;

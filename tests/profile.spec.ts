@@ -5,14 +5,14 @@ import { ProfilePage } from "../pages/ProfilePage"
 test.describe("Profile Page tests", () => {
     test.beforeEach(async ({ page }) => {
         const loginPage = new LoginPage(page)
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(1000)
 
         await loginPage.gotoLoginPage()
         await loginPage.login("testuser123@gmail.com", "cang@1012")
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(1000)
 
         await expect(page).toHaveURL("https://demo4.cybersoft.edu.vn/profile")
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(1000)
     })
 
     test("Verify profile page loaded ", async ({ page }) => {
@@ -26,10 +26,9 @@ test.describe("Profile Page tests", () => {
         await profilePage.updateName("Cang")
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the name is updated
-        // <div class="d-flex align-items-center gap-5"><h6>Name:</h6><p class="lorem">Cang</p></div>
         const updatedName = await page
             .locator(".d-flex.align-items-center.gap-5 p.lorem")
             .nth(0)
@@ -44,7 +43,7 @@ test.describe("Profile Page tests", () => {
         await profilePage.phoneInput.fill("1234567890")
         await page.waitForTimeout(1000)
         await profilePage.saveButton.click()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the phone number is updated
         const updatedPhone = await page
@@ -61,7 +60,7 @@ test.describe("Profile Page tests", () => {
         await profilePage.birthdayInput.fill("01/01/1990")
         await page.waitForTimeout(1000)
         await profilePage.saveButton.click()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the birthday is updated
         const updatedBirthday = await page
@@ -78,7 +77,7 @@ test.describe("Profile Page tests", () => {
         await profilePage.selectFemale()
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the gender is updated
         await profilePage.clickEditButton()
@@ -92,17 +91,16 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickEditButton()
         await page.waitForTimeout(1000)
         await profilePage.clearCertification()
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(1000)
         await profilePage.addCertification("ISTQB")
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the certification is added
-        // <div class="d-flex flex-row flex-wrap"><p class="lorem mx-1">Test</p></div>
         const certifications = await page
             .locator(".d-flex.flex-row.flex-wrap p.lorem")
-            .textContent()
+            .allTextContents()
         expect(certifications).toContain("ISTQB")
     })
 
@@ -111,15 +109,15 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickEditButton()
         await page.waitForTimeout(1000)
         await profilePage.clearCertification()
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(1000)
         await profilePage.addCertification("Testing Course")
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(1000)
         await profilePage.addCertification("PMP")
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(1000)
         await profilePage.addCertification("AWS Certified Solutions Architect")
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the certifications are added
         const certifications = await page
@@ -135,17 +133,17 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickEditButton()
         await page.waitForTimeout(1000)
         await profilePage.clearSkill()
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(1000)
         await profilePage.addSkill("Automation Testing")
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
         await page.waitForTimeout(3000)
 
         // Verify the skill is added
-        // <div class="d-flex flex-row flex-wrap"><p class="lorem mx-1">Test</p></div>
         const skills = await page
             .locator(".d-flex.flex-row.flex-wrap p.lorem")
-            .textContent()
+            .allTextContents()
+        await page.waitForTimeout(1000)
         expect(skills).toContain("Automation Testing")
     })
 
@@ -154,15 +152,15 @@ test.describe("Profile Page tests", () => {
         await profilePage.clickEditButton()
         await page.waitForTimeout(1000)
         await profilePage.clearSkill()
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(1000)
         await profilePage.addSkill("Manual Testing")
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(1000)
         await profilePage.addSkill("Performance Testing")
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(1000)
         await profilePage.addSkill("Security Testing")
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the skills are added
         const skills = await page
@@ -176,7 +174,7 @@ test.describe("Profile Page tests", () => {
     test("Verify Facebook link works", async ({ page }) => {
         const profilePage = new ProfilePage(page)
         await profilePage.clickFacebooklink()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the Facebook page is opened
         const pages = page.context().pages()
@@ -189,7 +187,7 @@ test.describe("Profile Page tests", () => {
     test("Verify Google link works", async ({ page }) => {
         const profilePage = new ProfilePage(page)
         await profilePage.clickGoogleLink()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the Google page is opened
         const pages = page.context().pages()
@@ -202,7 +200,7 @@ test.describe("Profile Page tests", () => {
     test("Verify Github link works", async ({ page }) => {
         const profilePage = new ProfilePage(page)
         await profilePage.clickGithubLink()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the Github page is opened
         const pages = page.context().pages()
@@ -215,7 +213,7 @@ test.describe("Profile Page tests", () => {
     test("Verify Twitter link works", async ({ page }) => {
         const profilePage = new ProfilePage(page)
         await profilePage.clickTwitterLink()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the Twitter page is opened
         const pages = page.context().pages()
@@ -228,20 +226,20 @@ test.describe("Profile Page tests", () => {
     test("Verify Dribble link works", async ({ page }) => {
         const profilePage = new ProfilePage(page)
         await profilePage.clickDribbleLink()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the Dribble page is opened
         const pages = page.context().pages()
         expect(pages.length).toBe(2)
         const dribblePage = pages[1]
         await dribblePage.waitForLoadState()
-        expect(dribblePage.url()).toContain("dribbble.com") // Assuming the Dribble link should lead to dribbble.com
+        expect(dribblePage.url()).toContain("dribbble.com")
     })
 
     test("Verify Stack Overflow link works", async ({ page }) => {
         const profilePage = new ProfilePage(page)
         await profilePage.clickStackOverflowLink()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the Stack Overflow page is opened
         const pages = page.context().pages()
@@ -254,7 +252,7 @@ test.describe("Profile Page tests", () => {
     test("Logout successfully", async ({ page }) => {
         const profilePage = new ProfilePage(page)
         await profilePage.logout()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the user is logged out and redirected to the login page
         await expect(page).toHaveURL("https://demo4.cybersoft.edu.vn/login")
@@ -264,18 +262,17 @@ test.describe("Profile Page tests", () => {
         const profilePage = new ProfilePage(page)
         await profilePage.clickEditButton()
         await page.waitForTimeout(1000)
-        const filePath = "data\\images\\images.jfif" // Update with the actual path to your test image
+        const filePath = "data\\images\\images.jfif"
         await profilePage.profileImageFileInput.setInputFiles(filePath)
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
-        // Verify the profile image is updated (this will depend on how the application displays the uploaded image)
-        // <div class="image d-flex"><img src="http://fiverrnew.cybersoft.edu.vn/avatar/23-02-2026-10-15-47-images.jfif" alt="avatar" class="w-100 avatar"></div>
+        // Verify the profile image is updated
         const uploadedImageSrc = await page
             .locator("div.image.d-flex img.avatar")
             .getAttribute("src")
-        expect(uploadedImageSrc).toContain("images.jfif") // Assuming the uploaded image's filename is part of the src attribute
+        expect(uploadedImageSrc).toContain("images.jfif")
     })
 
     test("Verify update basic information successfully", async ({ page }) => {
@@ -290,7 +287,7 @@ test.describe("Profile Page tests", () => {
         })
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
 
         // Verify the basic information is updated
         const updatedName = await page
