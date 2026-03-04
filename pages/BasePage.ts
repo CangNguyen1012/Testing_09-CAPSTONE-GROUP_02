@@ -6,7 +6,6 @@ export class BasePage {
 
     constructor(page: Page) {
         this.page = page
-        // <button class="btn btn-success" type="submit">Search</button>
         this.searchButton = page.locator(
             "button.btn.btn-success[type='submit']",
         )

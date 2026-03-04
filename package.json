@@ -10,7 +10,9 @@
     "test:debug": "playwright test --debug",
     "test:example": "playwright test example",
     "test:report": "playwright show-report",
-    "test:home": "playwright test home --project=chromium --headed"
+    "test:home": "playwright test home --project=chromium --headed",
+    "test:profile": "playwright test profile --project=chromium --headed",
+    "test:gig": "playwright test gig --project=chromium --headed"
   },
   "keywords": [],
   "author": "",
