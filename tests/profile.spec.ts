@@ -143,7 +143,7 @@ test.describe("Profile Page tests", () => {
         await profilePage.addSkill("Automation Testing")
         await page.waitForTimeout(1000)
         await profilePage.clickSave()
-        await page.waitForTimeout(3000)
+        await page.waitForTimeout(2000)
         await profilePage.expectSuccessToast("Cập nhật thông tin thành công")
 
         // Verify the skill is added
@@ -317,6 +317,49 @@ test.describe("Profile Page tests", () => {
         expect(updatedBirthday).toBe("02/02/1992")
     })
 
+    test("Verify update all fields successfully", async ({ page }) => {
+        const profilePage = new ProfilePage(page)
+        await profilePage.clickEditButton()
+        await page.waitForTimeout(1000)
+        await profilePage.updateProfile({
+            name: "Cang Nguyen",
+            phone: "0987654321",
+            birthday: "02/02/1992",
+        })
+        await profilePage.clearCertification()
+        await profilePage.addCertification("ISTQB")
+        await profilePage.clearSkill()
+        await profilePage.addSkill("JavaScript")
+
+        await profilePage.clickSave()
+        await page.waitForTimeout(2000)
+
+        // Verify all fields are updated
+        const updatedName = await page
+            .locator(".d-flex.align-items-center.gap-5 p.lorem")
+            .nth(0)
+            .textContent()
+        const updatedPhone = await page
+            .locator(".d-flex.align-items-center.gap-5 p.lorem")
+            .nth(1)
+            .textContent()
+        const updatedBirthday = await page
+            .locator(".d-flex.align-items-center.gap-5 p.lorem")
+            .nth(2)
+            .textContent()
+        expect(updatedName).toBe("Cang Nguyen")
+        expect(updatedPhone).toBe("0987654321")
+        expect(updatedBirthday).toBe("02/02/1992")
+        const certifications = await page
+            .locator(".d-flex.flex-row.flex-wrap p.lorem")
+            .allTextContents()
+        expect(certifications).toContain("ISTQB")
+        const skills = await page
+            .locator(".d-flex.flex-row.flex-wrap p.lorem")
+            .allTextContents()
+        expect(skills).toContain("JavaScript")
+    })
+
     test("Verify birthday input validation", async ({ page }) => {
         const profilePage = new ProfilePage(page)
         await profilePage.clickEditButton()
@@ -439,5 +482,9 @@ test.describe("Profile Page tests", () => {
             .allTextContents()
 
         expect(skills.some((s) => s.length <= 255)).toBeTruthy()
+    })
+
+    test.afterEach(async ({ page }) => {
+        await page.waitForTimeout(2000)
     })
 })

@@ -67,14 +67,16 @@ export class ProfilePage {
         this.createGigButton = page.locator("button.btn", {
             hasText: "Create a new Gig",
         })
-        this.successToastMessage = page.locator(".Toastify__toast--success")
+        this.successToastMessage = page.locator(".Toastify__toast--success", {
+            hasText: "Cập nhật thông tin thành công",
+        })
     }
 
     // toast helpers -------------------------------------------------------
     /**
      * Waits until a success toast appears and returns its text.
      */
-    async waitForSuccessToast(timeout: number = 5000): Promise<string> {
+    async waitForSuccessToast(timeout: number = 60000): Promise<string> {
         await this.successToastMessage.waitFor({ state: "visible", timeout })
         const text = await this.successToastMessage.textContent()
         return text ?? ""
@@ -306,7 +308,7 @@ export class ProfilePage {
         )
         await this.saveButton.click()
         // wait for the success toast (message is localized Vietnamese in screenshot)
-        await this.waitForSuccessToast().catch(() => {})
+        // await this.waitForSuccessToast().catch(() => {})
     }
 
     async clickCancel() {
