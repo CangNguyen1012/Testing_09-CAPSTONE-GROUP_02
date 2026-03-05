@@ -18,7 +18,10 @@ export class HomePage {
     }
 
     async goto() {
-        await this.page.goto("https://demo4.cybersoft.edu.vn/")
+        await this.page.goto("https://demo4.cybersoft.edu.vn/", {
+            waitUntil: "domcontentloaded",
+            timeout: 60000,
+        })
     }
 
     async search(keyword: string) {

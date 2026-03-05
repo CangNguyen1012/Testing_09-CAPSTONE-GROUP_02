@@ -9,9 +9,9 @@ export class LoginPage {
     readonly loginButton: Locator
     readonly registerLink: Locator
     readonly logoutButton: Locator
-    readonly errorMessage: Locator
     readonly emailErrorMessage: Locator
     readonly passwordErrorMessage: Locator
+    readonly loginFailMessage: Locator
 
     readonly url = "https://demo4.cybersoft.edu.vn/login"
 
@@ -24,7 +24,6 @@ export class LoginPage {
         this.loginButton = page.locator("button[type='submit']")
         this.registerLink = page.getByRole("link", { name: "Register now ?" })
         this.logoutButton = page.getByRole("button", { name: "Logout" })
-        this.errorMessage = page.locator(".text-danger")
         this.emailErrorMessage = page
             .locator("#email")
             .locator('xpath=following::div[contains(@class,"text-danger")]')
@@ -33,6 +32,7 @@ export class LoginPage {
             .locator("#password")
             .locator('xpath=following::div[contains(@class,"text-danger")]')
             .first()
+        this.loginFailMessage = page.locator(".ant-message-error")
     }
 
     // Open login page
@@ -89,5 +89,20 @@ export class LoginPage {
     //Kiểm tra thông báo lỗi hiển thị đúng khi để trống Your Email
     async submit() {
         await this.loginButton.click()
+    }
+
+    async getEmailError() {
+        await expect(this.emailErrorMessage).toBeVisible()
+        return await this.emailErrorMessage.textContent()
+    }
+
+    async getPasswordError() {
+        await expect(this.passwordErrorMessage).toBeVisible()
+        return await this.passwordErrorMessage.textContent()
+    }
+
+    async getLoginFailMessage() {
+        await expect(this.loginFailMessage).toBeVisible()
+        return await this.loginFailMessage.textContent()
     }
 }
