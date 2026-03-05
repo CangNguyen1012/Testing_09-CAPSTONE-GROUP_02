@@ -23,10 +23,7 @@ export class SearchResultPage {
 
     // chọn category theo tên
     async filterByCategory(categorySlug: string) {
-        await this.page
-            .locator(`a[href*="${categorySlug}"]`)
-            .first()
-            .click()
+        await this.page.locator(`a[href*="${categorySlug}"]`).first().click()
     }
 
     async filterByPrice(min: string, max: string) {

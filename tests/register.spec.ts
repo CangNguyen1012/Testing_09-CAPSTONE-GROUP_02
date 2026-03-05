@@ -72,7 +72,6 @@ test.describe("Register Page", () => {
         )
     })
 
-    //Kiểm tra thông báo lỗi hiển thị đúng khi nhập Your Name vượt quá ký tự quy định
     test("Kiểm tra thông báo lỗi khi nhập Tên vượt quá 50 ký tự", async ({
         page,
     }) => {
@@ -155,7 +154,6 @@ test.describe("Register Page", () => {
         )
     })
 
-    //Kiểm tra thông báo lỗi hiển thị đúng khi nhập [Your Email] vượt quá ký tự quy định
     test("Kiểm tra thông báo lỗi khi nhập Email vượt quá 254 ký tự", async ({
         page,
     }) => {
