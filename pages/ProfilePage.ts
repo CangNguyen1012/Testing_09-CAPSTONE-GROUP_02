@@ -29,6 +29,7 @@ export class ProfilePage {
     readonly clearSkillButton: Locator
     readonly createGigButton: Locator
     readonly successToastMessage: Locator
+    readonly btnShowGigDetail: Locator
 
     readonly url = "https://demo4.cybersoft.edu.vn/profile"
 
@@ -74,6 +75,7 @@ export class ProfilePage {
         this.successToastMessage = page.locator(".Toastify__toast--success", {
             hasText: "Cập nhật thông tin thành công",
         })
+         this.btnShowGigDetail = page.locator("button.viewdetail");
     }
 
     async clickDropdownMenu() {
@@ -361,4 +363,7 @@ export class ProfilePage {
         )
         await this.createGigButton.click({ timeout: 3000 })
     }
+    async showGigDetail() {
+    await this.btnShowGigDetail.nth(0).click();
+  }
 }

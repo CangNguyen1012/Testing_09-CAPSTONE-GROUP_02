@@ -7,6 +7,7 @@ export class HomePage {
     readonly gigItems: Locator
     readonly popularSection: Locator
     readonly popularItems: Locator
+    readonly header: Header;
 
     constructor(page: Page) {
         this.page = page
@@ -15,6 +16,7 @@ export class HomePage {
         this.gigItems = page.locator(".card")
         this.popularSection = page.locator(".d-flex.popular")
         this.popularItems = this.popularSection.locator(".btn")
+        this.header = new Header(page);
     }
 
     async goto() {
