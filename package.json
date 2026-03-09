@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test --headed --project=chromium",
+    "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:chrome": "playwright test --project=chromium",
     "test:debug": "playwright test --debug",
